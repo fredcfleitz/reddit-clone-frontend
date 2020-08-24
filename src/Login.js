@@ -35,9 +35,10 @@ class Login extends Component {
     var res;
     const requestOptions = {
         method: 'GET',
-        headers: { 'Authorization': 'Basic ' + encode(this.state.username + ":" + this.state.password)}
+        headers: { 'Authorization': 'Basic ' + encode(this.state.username + ":" + this.state.password),
+         'Content-Type': 'application/json' }
     };
-    await fetch('/api/users/', requestOptions)
+    await fetch('https://reddit-mock2.herokuapp.com/api/users', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});

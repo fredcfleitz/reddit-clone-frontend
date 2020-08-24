@@ -34,7 +34,7 @@ class Post extends Component {
       downvoted: false,
     })
     if (this.state.upvoted){
-      const url = "/api/posts/" + this.props.post.id + "/downvote";
+      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/downvote";
       fetch(url, {method:'PUT'})
     } else {
       const url = "/api/posts/" + this.props.post.id + "/upvote";
@@ -53,13 +53,13 @@ class Post extends Component {
       upvoted: false,
     })
     if (!this.state.downvoted){
-      const url = "/api/posts/" + this.props.post.id + "/downvote";
+      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/downvote";
       fetch(url, {method:'PUT'});
       if (this.state.upvoted){
         fetch(url, {method:'PUT'})
       }
     } else {
-      const url = "/api/posts/" + this.props.post.id + "/upvote";
+      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/upvote";
       fetch(url, {method:'PUT'})
     }
   }

@@ -36,7 +36,7 @@ class Navbartop extends Component {
   }
 
   async componentDidMount() {
-    const response = await fetch('/api/subreddits');
+    const response = await fetch('https://reddit-mock2.herokuapp.com/api/subreddits');
     const body = await response.json();
     this.setState({subreddits:body, isLoading:false});
   }

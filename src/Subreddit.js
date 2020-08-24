@@ -15,7 +15,7 @@ class Subreddit extends Component {
 
   async componentDidMount() {
     const subreddit = this.props.match.params.subreddit;
-    const url = "/api/r/" + subreddit + "/posts"
+    const url = "https://reddit-mock2.herokuapp.com/api/r/" + subreddit + "/posts"
     const response = await fetch(url);
     const body = await response.json();
     this.setState({posts:body, isLoading:false});

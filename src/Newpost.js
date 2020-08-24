@@ -33,7 +33,7 @@ class Newpost extends Component {
         body: JSON.stringify({ title:this.state.title,
           content:this.state.content, user:this.state.user, subreddit:this.state.subreddit, score:'0'})
     };
-    await fetch('/api/posts/', requestOptions)
+    await fetch('https://reddit-mock2.herokuapp.com/api/posts/', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});

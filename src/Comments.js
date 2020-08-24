@@ -22,7 +22,7 @@ class Comments extends Component {
 
   async componentDidMount() {
     const postId = this.props.match.params.postId;
-    const url = '/api/comments/' + postId;
+    const url = 'https://reddit-mock2.herokuapp.com/api/comments/' + postId;
     const response = await fetch(url);
     const body = await response.json();
     const post_url = '/api/posts/' + postId;
@@ -39,7 +39,7 @@ class Comments extends Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({content:this.state.content, parent:this.props.match.params.postId})
     };
-    await fetch('/api/comments/', requestOptions)
+    await fetch('https://reddit-mock2.herokuapp.com/api/comments/', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});

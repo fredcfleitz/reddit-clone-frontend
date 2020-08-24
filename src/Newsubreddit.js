@@ -37,7 +37,7 @@ class Newsubreddit extends Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title:this.state.title})
     };
-    await fetch('/api/subreddits/', requestOptions)
+    await fetch('https://reddit-mock2.herokuapp.com/api/subreddits/', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});
