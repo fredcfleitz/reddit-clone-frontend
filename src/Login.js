@@ -35,8 +35,7 @@ class Login extends Component {
     var res;
     const requestOptions = {
         method: 'GET',
-        headers: { 'Authorization': 'Basic ' + encode(this.state.username + ":" + this.state.password),
-         'Content-Type': 'application/json' }
+        headers: { 'Authorization': 'Basic ' + encode(this.state.username + ":" + this.state.password)}
     };
     await fetch('/api/users/', requestOptions)
         .then(response => response.json())
