@@ -46,7 +46,7 @@ class Signup extends Component {
         body: JSON.stringify({ userName:this.state.username,
           password:this.state.password, roles:"USER", active:true })
     };
-    await fetch('/api/users/', requestOptions)
+    await fetch('https://reddit-mock2.herokuapp.com/api/users/', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});
