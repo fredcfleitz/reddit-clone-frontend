@@ -14,7 +14,7 @@ class Home extends Component {
   };
 
   async componentDidMount() {
-    const response = await fetch('/api/posts');
+    const response = await fetch('https://reddit-mock2.herokuapp.com/api/posts');
     const body = await response.json();
     this.setState({posts:body, isLoading:false});
   }
