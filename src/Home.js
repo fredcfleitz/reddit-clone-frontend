@@ -5,6 +5,7 @@ import './App.css';
 import {
   Media, Collapse, Button, CardBody, Card, Nav, NavItem, NavLink
 } from 'reactstrap';
+import API_URL from './config';
 
 
 class Home extends Component {
@@ -14,7 +15,13 @@ class Home extends Component {
   };
 
   async componentDidMount() {
-    const response = await fetch('https://reddit-mock2.herokuapp.com/api/posts');
+    const requestOptions = {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        withCredentials: true,
+       };
+    const response = await fetch(API_URL + '/posts', requestOptions);
     const body = await response.json();
     this.setState({posts:body, isLoading:false});
   }

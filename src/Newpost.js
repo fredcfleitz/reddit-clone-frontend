@@ -4,6 +4,7 @@ Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import Cookies from 'js-cookie';
 import classnames from 'classnames';
 import logo from './logo.svg';
+import API_URL from './config';
 
 class Newpost extends Component {
 
@@ -12,7 +13,7 @@ class Newpost extends Component {
     this.state = {
       title: "",
       content: "",
-      user: Cookies.get('username'),
+      user: Cookies.get('remember_token').split("|")[0],
       subreddits: [],
       subreddit: null,
       activeTab: "1",
@@ -33,7 +34,7 @@ class Newpost extends Component {
         body: JSON.stringify({ title:this.state.title,
           content:this.state.content, user:this.state.user, subreddit:this.state.subreddit, score:'0'})
     };
-    await fetch('https://reddit-mock2.herokuapp.com/api/posts/', requestOptions)
+    await fetch(API_URL + '/posts', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});
@@ -62,8 +63,9 @@ class Newpost extends Component {
   }
 
   async componentDidMount() {
-    const response = await fetch('/api/subreddits');
+    const response = await fetch(API_URL + '/subreddits');
     const body = await response.json();
+    console.log(body)
     this.setState({subreddits:body, subreddit:body[0].title});
   }
 

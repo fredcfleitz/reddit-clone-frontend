@@ -6,6 +6,12 @@ import {
 import logo from './logo.svg';
 import './App.css';
 import Cookies from 'js-cookie';
+import API_URL from './config';
+
+import up from './Up.png'
+import upvote from './Upvote.png'
+import down from './Down.png'
+import downvote from './Downvote.png'
 
 class Comment extends Component {
 
@@ -23,7 +29,7 @@ class Comment extends Component {
   }
   async componentDidMount() {
     const postId = this.props.comment.id;
-    const url = '/api/comments/' + postId;
+    const url = API_URL + '/comments/' + postId;
     const response = await fetch(url);
     const body = await response.json();
     this.setState({comments:body, isLoading:false});
@@ -34,10 +40,13 @@ class Comment extends Component {
     var res;
     const requestOptions = {
         method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        withCredentials: true,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({content:this.state.content, parent:this.props.comment.id, user:Cookies.get('username')})
     };
-    await fetch('https://reddit-mock2.herokuapp.com/api/comments/', requestOptions)
+    await fetch(API_URL + '/comments', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});
@@ -65,16 +74,31 @@ class Comment extends Component {
 
   render(){
     const {comments, isLoading} = this.state;
+    const score = parseInt(this.props.comment.score)
     return (
       <Media key={this.props.comment.id}>
+        <ul style={{'list-style-type':'none', 'padding':0}}>
+          <li><Media object
+          src={this.state.upvoted ? upvote : up}
+          onClick= {this.toggleUpvote}/>
+          </li>
+          <li style={{'text-align':'center'}}>{score}</li>
+          <li><Media object
+          src={this.state.downvoted ? downvote : down}
+          onClick= {this.toggleDownvote}/>
+          </li>
+
+        </ul>
         <Media left href="#">
           <Media align="left" width="7%" object src={logo} alt="Generic placeholder image" />
         </Media>
         <Media body>
+        <div style={{marginLeft: '15px'}}>
           <h5>
-            {this.props.comment.user}
+            {this.props.comment.username}
           </h5>
           {this.props.comment.content}
+        </div>
           <div>
             <Nav>
               <NavLink href="#" onClick={this.toggle}>Reply</NavLink>

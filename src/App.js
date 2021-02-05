@@ -28,7 +28,8 @@ class App extends Component {
       <Route path="/comments/:postId" component={Comments} />
       <Route path="/signup" component={Signup} />
       <Route path="/newpost" component={Newpost} />
-      <Route path="/r/:subreddit" component={Subreddit} />
+      <Route path="/r/:subreddit/comments/:postId/" component={Comments} />
+      <Route exact={true} path="/r/:subreddit/" component={Subreddit} />
       </div>
     );
   }

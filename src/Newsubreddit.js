@@ -3,6 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form,
 FormGroup, Label, Input, FormText } from 'reactstrap';
 import Cookies from 'js-cookie'
 import { encode } from "base-64";
+import API_URL from './config';
 
 class Newsubreddit extends Component {
 
@@ -34,10 +35,13 @@ class Newsubreddit extends Component {
     var res;
     const requestOptions = {
         method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        withCredentials: true,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title:this.state.title})
     };
-    await fetch('https://reddit-mock2.herokuapp.com/api/subreddits/', requestOptions)
+    await fetch(API_URL + '/subreddits', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});

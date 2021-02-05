@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { Redirect } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import API_URL from './config';
 
 class Signup extends Component {
   constructor(props) {
@@ -44,9 +45,9 @@ class Signup extends Component {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userName:this.state.username,
-          password:this.state.password, roles:"USER", active:true })
+          password:this.state.password, roles:"USER" })
     };
-    await fetch('https://reddit-mock2.herokuapp.com/api/users/', requestOptions)
+    await fetch(API_URL + '/users', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});

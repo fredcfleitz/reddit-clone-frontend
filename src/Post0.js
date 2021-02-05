@@ -3,7 +3,7 @@ import {
   Media, Collapse, Button, CardBody, Card, Nav, NavItem, NavLink
 } from 'reactstrap';
 
-import logo from './logo.png';
+import logo from './logo.svg';
 import './App.css';
 import up from './Up.png'
 import upvote from './Upvote.png'
@@ -11,7 +11,7 @@ import down from './Down.png'
 import downvote from './Downvote.png'
 import Cookies from 'js-cookie'
 
-class Content extends Component {
+class Post extends Component {
 
   constructor(props){
     super(props);
@@ -34,7 +34,7 @@ class Content extends Component {
       downvoted: false,
     })
     if (this.state.upvoted){
-      const url = "/api/posts/" + this.props.post.id + "/downvote";
+      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/downvote";
       fetch(url, {method:'PUT'})
     } else {
       const url = "/api/posts/" + this.props.post.id + "/upvote";
@@ -53,27 +53,27 @@ class Content extends Component {
       upvoted: false,
     })
     if (!this.state.downvoted){
-      const url = "/api/posts/" + this.props.post.id + "/downvote";
+      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/downvote";
       fetch(url, {method:'PUT'});
       if (this.state.upvoted){
         fetch(url, {method:'PUT'})
       }
     } else {
-      const url = "/api/posts/" + this.props.post.id + "/upvote";
+      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/upvote";
       fetch(url, {method:'PUT'})
     }
   }
 
   render(){
-    const imgsrc = this.props.post.data ? ("data:image/png;base64," + this.props.post.data) : logo
-    const comments_link = "/comments/" + this.props.post.id;
+    const imgsrc = "data:image/png;base64," + this.props.post.data
+    const comments_link = "/r/" + this.props.post.subreddit + "/comments/" + this.props.post.id + "/";
     const score = parseInt(this.props.post.score)
     + (this.state.upvoted ? 1 : 0)
     - (this.state.downvoted ? 1 : 0)
     + this.state.offset;
     return (
       <Media key={this.props.post.id}>
-      <ul style={{'list-style-type':'none', 'padding':0}}>
+      <ul style={{'list-style-type':'none', 'padding':0, 'margin':'auto'}}>
         <li><Media object
         src={this.state.upvoted ? upvote : up}
         onClick= {this.toggleUpvote}/>
@@ -86,15 +86,17 @@ class Content extends Component {
 
       </ul>
         <Media body>
-          <Media left href="#">
-            <Media align="left" style={{marginLeft:'5px', marginRight:'5px'}} width="80px" height="80px"  object src={imgsrc} alt="Generic placeholder image" />
-          </Media>
-          <h5 style={{margin:0}}>
+            <Media align="left" width="90px" style={{marginLeft:'5px', marginRight:'5px','margin-top':'15px'}}  object src={imgsrc} alt="Generic placeholder image" />
+
+          <h5>
             {this.props.post.title}
           </h5>
-          Submitted by {this.props.post.username}<br/>
-          {this.props.post.data ? <img style={{marginLeft:5}} src={imgsrc} /> :
-          <Card>{this.props.post.content}</Card>}
+          Submitted by {this.props.post.username}
+          <div>
+            <Nav>
+              <NavLink href={comments_link} style={{'padding-left':0}}>Comments</NavLink>
+            </Nav>
+          </div>
         </Media>
       </Media>
     )
@@ -104,4 +106,4 @@ class Content extends Component {
 
 }
 
-export default Content;
+export default Post;

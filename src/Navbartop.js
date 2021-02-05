@@ -17,6 +17,7 @@ import {
 import Cookies from 'js-cookie'
 import Login from './Login'
 import Newsubreddit from './Newsubreddit'
+import API_URL from './config';
 
 class Navbartop extends Component {
 
@@ -24,7 +25,8 @@ class Navbartop extends Component {
     super(props)
     this.state= {
       isOpen: false,
-      username: Cookies.get('username'),
+      username: (Cookies.get('remember_token') ?
+      Cookies.get('remember_token').split("|")[0] : null),
       showLogin: false,
       showSubreddit: false,
       subreddits: []
@@ -36,8 +38,15 @@ class Navbartop extends Component {
   }
 
   async componentDidMount() {
-    const response = await fetch('https://reddit-mock2.herokuapp.com/api/subreddits');
+    const requestOptions = {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        withCredentials: true,
+       };
+    const response = await fetch(API_URL + '/subreddits');
     const body = await response.json();
+    console.log(body)
     this.setState({subreddits:body, isLoading:false});
   }
 
@@ -59,8 +68,14 @@ class Navbartop extends Component {
     })
   }
 
-  logout() {
-    Cookies.remove('username')
+  async logout() {
+    const requestOptions = {
+        mode: 'cors',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      };
+    const response = await fetch(API_URL + "/logout", requestOptions);
     window.location.reload();
   }
 

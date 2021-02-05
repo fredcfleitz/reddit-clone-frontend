@@ -10,15 +10,17 @@ import upvote from './Upvote.png'
 import down from './Down.png'
 import downvote from './Downvote.png'
 import Cookies from 'js-cookie'
+import API_URL from './config';
 
 class Post extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      upvoted:((Cookies.get(this.props.post.id+"upvoted") == 'true')),
-      downvoted:((Cookies.get(this.props.post.id+"downvoted") == 'true')),
-      offset: 0
+      user: (Cookies.get('remember_token') ?
+      Cookies.get('remember_token').split("|")[0] : null),
+      vote:0,
+      score: this.props.post.score,
     }
     this.state.offset = (this.state.upvoted ? -1 : 0) + (this.state.downvoted ? 1 : 0)
     console.log(this.state.upvoted)
@@ -26,47 +28,58 @@ class Post extends Component {
     this.toggleDownvote = this.toggleDownvote.bind(this);
   }
 
-  toggleUpvote(event) {
-    Cookies.set(this.props.post.id+"upvoted", !this.state.upvoted)
-    Cookies.set(this.props.post.id+"downvoted", false)
-    this.setState({
-      upvoted: !this.state.upvoted,
-      downvoted: false,
-    })
-    if (this.state.upvoted){
-      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/downvote";
-      fetch(url, {method:'PUT'})
-    } else {
-      const url = "/api/posts/" + this.props.post.id + "/upvote";
-      fetch(url, {method:'PUT'});
-      if (this.state.downvoted){
-        fetch(url, {method:'PUT'})
+  async toggleUpvote(event) {
+    const url = API_URL + "/posts/" + this.props.post.id + "/upvote";
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userName:this.state.user})
+    };
+    var res;
+    await fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(json => res = json)
+        .catch((error) => {console.error(error);});
+        console.log(res);
+        if(res.status != "500"){
+          this.setState({score:res.score, vote:res.vote})
+      }
+  }
+
+  async componentDidMount() {
+    if (this.props.post.upvoters){
+      if (this.props.post.upvoters.includes(this.state.user)){
+        this.setState({vote:1})
+      }
+    }
+    if (this.props.post.downvoters){
+      if (this.props.post.downvoters.includes(this.state.user)){
+        this.setState({vote:-1})
       }
     }
   }
 
-  toggleDownvote(event) {
-    Cookies.set(this.props.post.id+"upvoted", false)
-    Cookies.set(this.props.post.id+"downvoted", !this.state.downvoted)
-    this.setState({
-      downvoted: !this.state.downvoted,
-      upvoted: false,
-    })
-    if (!this.state.downvoted){
-      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/downvote";
-      fetch(url, {method:'PUT'});
-      if (this.state.upvoted){
-        fetch(url, {method:'PUT'})
+  async toggleDownvote(event) {
+    const url = API_URL + "/posts/" + this.props.post.id + "/downvote";
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userName:this.state.user})
+    };
+    var res;
+    await fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(json => res = json)
+        .catch((error) => {console.error(error);});
+        console.log(res);
+        if(res.status != "500"){
+          this.setState({score:res.score, vote:res.vote})
       }
-    } else {
-      const url = "https://reddit-mock2.herokuapp.com/api/posts/" + this.props.post.id + "/upvote";
-      fetch(url, {method:'PUT'})
-    }
   }
 
   render(){
     const imgsrc = "data:image/png;base64," + this.props.post.data
-    const comments_link = "/comments/" + this.props.post.id;
+    const comments_link = "/r/" + this.props.post.subreddit + "/comments/" + this.props.post.id + "/";
     const score = parseInt(this.props.post.score)
     + (this.state.upvoted ? 1 : 0)
     - (this.state.downvoted ? 1 : 0)
@@ -75,12 +88,12 @@ class Post extends Component {
       <Media key={this.props.post.id}>
       <ul style={{'list-style-type':'none', 'padding':0, 'margin':'auto'}}>
         <li><Media object
-        src={this.state.upvoted ? upvote : up}
+        src={this.state.vote == 1 ? upvote : up}
         onClick= {this.toggleUpvote}/>
         </li>
-        <li style={{'text-align':'center'}}>{score}</li>
+        <li style={{'text-align':'center'}}>{this.state.score}</li>
         <li><Media object
-        src={this.state.downvoted ? downvote : down}
+        src={this.state.vote == -1 ? downvote : down}
         onClick= {this.toggleDownvote}/>
         </li>
 
@@ -91,7 +104,7 @@ class Post extends Component {
           <h5>
             {this.props.post.title}
           </h5>
-          Submitted by {this.props.post.user}
+          Submitted by {this.props.post.username}
           <div>
             <Nav>
               <NavLink href={comments_link} style={{'padding-left':0}}>Comments</NavLink>

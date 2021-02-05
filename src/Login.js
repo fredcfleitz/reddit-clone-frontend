@@ -1,8 +1,9 @@
 import React, { useState, Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form,
+import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form,
 FormGroup, Label, Input, FormText } from 'reactstrap';
 import Cookies from 'js-cookie'
 import { encode } from "base-64";
+import API_URL from './config';
 
 class Login extends Component {
 
@@ -11,6 +12,7 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
+      incorrect: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,17 +36,23 @@ class Login extends Component {
     event.preventDefault();
     var res;
     const requestOptions = {
-        method: 'GET',
-        headers: { 'Authorization': 'Basic ' + encode(this.state.username + ":" + this.state.password),
-         'Content-Type': 'application/json' }
-    };
-    await fetch('https://reddit-mock2.herokuapp.com/api/users', requestOptions)
-        .then(response => response.json())
-        .then(json => res = json)
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 'userName':this.state.username, 'password': this.state.password})
+     };
+    await fetch(API_URL +'/login', requestOptions)
+        .then(response => res = response)
+        .then(data => res = data)
         .catch((error) => {console.error(error);});
-        if(res.status != "500"){
-          Cookies.set('username',this.state.username)
+        if(res){
+          this.setState({incorrect: false});
           window.location.reload();
+        } else {
+          this.setState({incorrect: true});
+            console.log(this.state.incorrect)
         }
   }
 
@@ -55,7 +63,7 @@ class Login extends Component {
     <div>
       <Modal isOpen={this.props.showLogin}>
         <Form onSubmit={this.handleSubmit}>
-        <ModalHeader>{this.props.showLogin}</ModalHeader>
+        <ModalHeader>Login</ModalHeader>
         <ModalBody>
             <FormGroup>
               <Label for="username">Username</Label>
@@ -75,6 +83,7 @@ class Login extends Component {
                 onChange={this.handleInputChange}
               />
             </FormGroup>
+            {this.state.incorrect == false ? "" : <Alert color="danger">Incorrect username or password</Alert>}
 
         </ModalBody>
         <ModalFooter>

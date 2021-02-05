@@ -5,6 +5,7 @@ import './App.css';
 import {
   Media, Collapse, Button, CardBody, Card, Nav, NavItem, NavLink
 } from 'reactstrap';
+import API_URL from './config';
 
 
 class Subreddit extends Component {
@@ -15,7 +16,7 @@ class Subreddit extends Component {
 
   async componentDidMount() {
     const subreddit = this.props.match.params.subreddit;
-    const url = "https://reddit-mock2.herokuapp.com/api/r/" + subreddit + "/posts"
+    const url = API_URL + '/r/' + subreddit
     const response = await fetch(url);
     const body = await response.json();
     this.setState({posts:body, isLoading:false});

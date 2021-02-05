@@ -3,6 +3,7 @@ import Comment from "./Comment";
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import Post from "./Post";
 import Content from "./Content";
+import API_URL from './config';
 
 class Comments extends Component {
 
@@ -21,14 +22,26 @@ class Comments extends Component {
 
 
   async componentDidMount() {
+    console.log("test");
+    const options = {
+    mode: 'cors',
+    credentials: 'include',
+    withCredentials: true,}
     const postId = this.props.match.params.postId;
-    const url = 'https://reddit-mock2.herokuapp.com/api/comments/' + postId;
-    const response = await fetch(url);
+    const url = API_URL + '/comments/' + postId;
+    console.log("test2");
+    const response = await fetch(url, options);
     const body = await response.json();
-    const post_url = '/api/posts/' + postId;
+    console.log("test3");
+    const post_url = API_URL + '/posts/' + postId;
+    console.log(post_url);
     const post_response = await fetch(post_url);
     const post_body = await post_response.json()
+    console.log("log")
+    console.log(body);
+    console.log(this.state.comments);
     this.setState({comments:body, post:post_body, isLoading:false});
+
   }
 
   async handleSubmit(event) {
@@ -36,10 +49,13 @@ class Comments extends Component {
     var res;
     const requestOptions = {
         method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        withCredentials: true,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({content:this.state.content, parent:this.props.match.params.postId})
     };
-    await fetch('https://reddit-mock2.herokuapp.com/api/comments/', requestOptions)
+    await fetch(API_URL + '/comments', requestOptions)
         .then(response => response.json())
         .then(json => res = json)
         .catch((error) => {console.error(error);});
@@ -76,6 +92,7 @@ class Comments extends Component {
           </FormGroup>
           <Button type="submit">Submit</Button>
         </Form>
+        <br/>
         {comments.map(comment =>
             <Comment comment = {comment} />
         )}
