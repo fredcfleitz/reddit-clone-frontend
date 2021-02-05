@@ -3,9 +3,9 @@ import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form,
 FormGroup, Label, Input, FormText } from 'reactstrap';
 import Cookies from 'js-cookie'
 import { encode } from "base-64";
-//import API_URL from './config';
+import API_URL from './config';
 
-API_URL = process.env.APIURL
+//API_URL = process.env.APIURL
 
 class Login extends Component {
 

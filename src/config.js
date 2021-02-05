@@ -1,3 +1,3 @@
-//let API_URL = "http://localhost:5000"
-let API_URL = process.env.APIURL
+let API_URL = "https://reddit-mock2.herokuapp.com/users"
+//let API_URL = process.env.APIURL
 export default API_URL
