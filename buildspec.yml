@@ -3,19 +3,20 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 10
+      docker: 18
   pre_build:
     commands:
-      - echo Installing source NPM dependencies ...
-      - npm install
+      - echo logging in to ECR ...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 587553097424.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
       - echo Build started on `date`
-      - npm run build
+      - docker build -t reddit-front .
+      - docker tag reddit-front:latest 587553097424.dkr.ecr.us-east-1.amazonaws.com/reddit-front:latest
+      - docker push 587553097424.dkr.ecr.us-east-1.amazonaws.com/reddit-front:latest
   post_build:
     commands:
       - echo Build completed on `date`
 artifacts:
   files:
     - '**/*'
-  base-directory: build
