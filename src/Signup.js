@@ -32,6 +32,7 @@ class Signup extends Component {
     const target = event.target;
     const value = target.value;
     const id = target.id;
+    console.log(process.env)
 
     this.setState({
       [id]: value

@@ -2,6 +2,5 @@ FROM node
 COPY . /app
 WORKDIR /app
 RUN npm install
-RUN npm run build
 RUN npm install -g serve
-CMD serve -s build -l 80
+CMD REACT_APP_API_URL=$REACT_APP_API_URL npm run build && serve -s build -l 80
