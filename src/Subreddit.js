@@ -5,8 +5,7 @@ import './App.css';
 import {
   Media, Collapse, Button, CardBody, Card, Nav, NavItem, NavLink
 } from 'reactstrap';
-//import API_URL from './config';
-var API_URL = process.env.API_URL
+import API_URL from './config';
 
 class Subreddit extends Component {
   state= {

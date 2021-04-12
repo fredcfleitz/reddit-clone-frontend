@@ -48,16 +48,13 @@ class Signup extends Component {
         body: JSON.stringify({ userName:this.state.username,
           password:this.state.password, roles:"USER" })
     };
-    await fetch(API_URL + '/users', requestOptions)
-        .then(response => response.json())
-        .then(json => res = json)
-        .catch((error) => {console.error(error);});
-        console.log(res);
-        if(res.status != "500"){
-          //Cookies.set('username',this.state.username)
-          this.setRedirect();
-          window.location.reload();
-        }
+    res = await fetch(API_URL + '/users', requestOptions)
+    console.log(res)
+    if(res.status != "500"){
+      Cookies.set('username',this.state.username)
+      this.setRedirect();
+      window.location.reload();
+    }
   }
 
   render(){

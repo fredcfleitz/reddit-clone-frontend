@@ -17,8 +17,7 @@ import {
 import Cookies from 'js-cookie'
 import Login from './Login'
 import Newsubreddit from './Newsubreddit'
-//import API_URL from './config';
-var API_URL = process.env.API_URL
+import API_URL from './config';
 
 class Navbartop extends Component {
 
