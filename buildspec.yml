@@ -12,6 +12,7 @@ phases:
     commands:
       - echo Build started on `date`
       - REACT_APP_API_URL=$REACT_APP_API_URL npm run build
+      - aws s3 rm --recursive "s3://reddit-fred"
   post_build:
     commands:
       - echo Build completed on `date`
