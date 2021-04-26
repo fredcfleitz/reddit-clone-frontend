@@ -106,7 +106,7 @@ class Post extends Component {
             <Media align="left" width="90px" style={{marginLeft:'5px', marginRight:'5px','margin-top':'15px'}}  object src={imgsrc} alt="Generic placeholder image" />
 
           <h5>
-            {this.props.post.title}
+            <a href={comments_link}>{this.props.post.title}</a>
           </h5>
           Submitted {moment(this.props.post.created_at).fromNow()} by {this.props.post.username} to <a href={"/r/"+this.props.post.subreddit}>/r/{this.props.post.subreddit}</a>
           <div>
