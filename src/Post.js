@@ -108,7 +108,7 @@ class Post extends Component {
           <h5>
             {this.props.post.title}
           </h5>
-          Submitted {moment(this.props.post.created_at).fromNow()} by {this.props.post.username} to /r/{this.props.post.subreddit}
+          Submitted {moment(this.props.post.created_at).fromNow()} by {this.props.post.username} to <a href={"/r/"+this.props.post.subreddit}>/r/{this.props.post.subreddit}</a>
           <div>
             <Nav>
               <NavLink href={comments_link} style={{'padding-left':0}}>Comments</NavLink>
