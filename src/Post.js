@@ -81,7 +81,8 @@ class Post extends Component {
     const imgsrc = "data:image/png;base64," + this.props.post.data
     const comments_link = "/r/" + this.props.post.subreddit + "/comments/" + this.props.post.id + "/";
     const time = new Date(this.props.post.created_at);
-    const ago = Date.now() - time;
+    const now = Date.now();
+    const delta = time.getTime() - now.getTime();
     const score = parseInt(this.props.post.score)
     + (this.state.upvoted ? 1 : 0)
     - (this.state.downvoted ? 1 : 0)
@@ -106,7 +107,7 @@ class Post extends Component {
           <h5>
             {this.props.post.title}
           </h5>
-          Submitted {ago} by {this.props.post.username} to /r/{this.props.post.subreddit}
+          Submitted {delta} by {this.props.post.username} to /r/{this.props.post.subreddit}
           <div>
             <Nav>
               <NavLink href={comments_link} style={{'padding-left':0}}>Comments</NavLink>
