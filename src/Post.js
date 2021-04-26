@@ -82,7 +82,7 @@ class Post extends Component {
     const comments_link = "/r/" + this.props.post.subreddit + "/comments/" + this.props.post.id + "/";
     const time = new Date(this.props.post.created_at);
     const now = Date.now();
-    const delta = time.getTime() - now.getTime();
+    const delta = time.getTime() - now;
     const score = parseInt(this.props.post.score)
     + (this.state.upvoted ? 1 : 0)
     - (this.state.downvoted ? 1 : 0)
