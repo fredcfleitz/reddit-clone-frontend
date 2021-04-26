@@ -11,6 +11,7 @@ import down from './Down.png'
 import downvote from './Downvote.png'
 import Cookies from 'js-cookie'
 import API_URL from './config';
+import moment from 'moment';
 
 class Post extends Component {
 
@@ -82,7 +83,7 @@ class Post extends Component {
     const comments_link = "/r/" + this.props.post.subreddit + "/comments/" + this.props.post.id + "/";
     const time = new Date(this.props.post.created_at);
     const now = Date.now();
-    const delta = time.getTime() - now;
+    const delta = time.getHours();
     const score = parseInt(this.props.post.score)
     + (this.state.upvoted ? 1 : 0)
     - (this.state.downvoted ? 1 : 0)
@@ -107,7 +108,7 @@ class Post extends Component {
           <h5>
             {this.props.post.title}
           </h5>
-          Submitted {delta} by {this.props.post.username} to /r/{this.props.post.subreddit}
+          Submitted {moment(this.props.post.created_at).fromNow()} by {this.props.post.username} to /r/{this.props.post.subreddit}
           <div>
             <Nav>
               <NavLink href={comments_link} style={{'padding-left':0}}>Comments</NavLink>
