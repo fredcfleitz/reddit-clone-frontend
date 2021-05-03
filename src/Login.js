@@ -43,8 +43,6 @@ class Login extends Component {
         body: JSON.stringify({ 'userName':this.state.username, 'password': this.state.password})
      };
     var response = await fetch(API_URL +'/login', requestOptions)
-        .then(response => res = response)
-        .then(data => res = data)
         .catch((error) => {console.error(error);});
     if(response.status == 200){
       this.setState({incorrect: false});
