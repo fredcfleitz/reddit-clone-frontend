@@ -34,7 +34,6 @@ class Login extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    var res;
     const requestOptions = {
         method: 'POST',
         mode: 'cors',
@@ -47,11 +46,9 @@ class Login extends Component {
         .then(response => res = response)
         .then(data => res = data)
         .catch((error) => {console.error(error);});
-    console.log("test")
-    console.log(response)
-    if(res){
+    if(response.status == 200){
       this.setState({incorrect: false});
-      console.log(res)
+      console.log(response)
     } else {
       this.setState({incorrect: true});
         console.log(this.state.incorrect)
