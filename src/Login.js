@@ -46,10 +46,9 @@ class Login extends Component {
         .catch((error) => {console.error(error);});
     if(response.status == 200){
       this.setState({incorrect: false});
-      console.log(response)
+      window.location.reload();
     } else {
       this.setState({incorrect: true});
-        console.log(this.state.incorrect)
     }
   }
 
